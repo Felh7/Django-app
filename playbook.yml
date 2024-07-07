@@ -4,7 +4,7 @@
   become: yes
   vars:
     APPname: Django_app
-    APP_path: /opt/Django_service
+    APPpath: /opt/Django_service
     DBname: django
     DBuser: django_user
     DBpass: greatpass
@@ -30,7 +30,7 @@
 
   - name: Add Nginx cofig
     when: nginxinstalled is success
-    template: src=default.j2 dest=/etc/nginx/sites-available/default
+    template: src=defaults.j2 dest=/etc/nginx/sites-available/default
 
   - name: Install PostgreSQL
     apt:
@@ -39,7 +39,6 @@
         - postgresql-contrib
         - postgresql-server-dev-all
         - python3-psycopg2
-        - python-psycopg2
       state: latest
 
   - name: Start and enable postgres
@@ -77,21 +76,21 @@
       virtualenv_python: python3
 
   - name: Install a django project
-    command: "{{ APPpath }}/env/bin/django-admin.py startproject {{ APPname }} chdir={{ APPpath }}/"
+    command: "{{APPpath}}/env/bin/django-admin startproject {{APPname}} chdir={{APPpath}}/"
 
   - name: Create Settings File for Django
-    template: src=settings.py.j2 dest="{{ APPpath }}/{{ APPname }}/{{ APPname }}/settings.py"
+    template: src=settings.py.j2 dest="{{APPpath}}/{{APPname}}/{{APPname}}/settings.py"
 
   - name: Make migrations
-    shell: "{{APPpath}}/env/bin/python3 {{ APPpath }}/{{ APPname }}/manage.py makemigrations"
+    shell: "{{APPpath}}/env/bin/python3 {{APPpath}}/{{APPname}}/manage.py makemigrations"
 
   - name: Migrate database
-    django_manage: app_path="{{ APPpath }}/{{ APPname }}"
+    django_manage: app_path="{{APPpath}}/{{APPname}}"
                    command=migrate
                    virtualenv="{{APPpath}}/env"
 
   - name: Get all static files
-    django_manage: app_path="{{ APPpath }}/{{ APPname }}"
+    django_manage: app_path="{{APPpath}}/{{APPname}}"
                    command=collectstatic
                    virtualenv="{{APPpath}}/env" 
 
