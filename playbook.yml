@@ -1,0 +1,115 @@
+---
+- name: setuping Django + Django REST Framework, PostgreSQL, nginx
+  hosts: all
+  become: yes
+  vars:
+    APPname: Django_app
+    APP_path: /opt/Django_service
+    DBname: django
+    DBuser: django_user
+    DBpass: greatpass
+
+  tasks:
+
+  - name: Install base needed apt-packages
+    apt:
+      pkg:
+         - python3-dev
+         - python3-virtualenv
+         - python3-pip
+         - tcl-dev
+         - tk-dev
+         - python3-tk
+         - git
+         - virtualenv
+      state: latest
+
+  - name: Install Nginx
+    apt: name=nginx state=latest update_cache=true
+    register: nginxinstalled
+
+  - name: Add Nginx cofig
+    when: nginxinstalled is success
+    template: src=default.j2 dest=/etc/nginx/sites-available/default
+
+  - name: Install PostgreSQL
+    apt:
+      pkg:
+        - postgresql
+        - postgresql-contrib
+        - postgresql-server-dev-all
+        - python3-psycopg2
+        - python-psycopg2
+      state: latest
+
+  - name: Start and enable postgres
+    service: name=postgresql enabled=yes state=started
+
+  - name: Create database
+    postgresql_db: name="{{ DBname }}"
+    become_user: postgres
+    become: yes
+
+  - name: Create user
+    postgresql_user: db="{{ DBname }}"
+                     name="{{ DBuser }}"
+                     password="{{ DBpass }}"
+                     state=present
+                     role_attr_flags=NOSUPERUSER,NOCREATEDB
+    become: yes
+    become_user: postgres
+
+  - name: Creates directory
+    file: path="{{APPpath}}" state=directory
+
+  - name: Install Django Framework
+    pip:
+       name: django
+       virtualenv: "{{APPpath}}/env"
+       virtualenv_command: virtualenv
+       virtualenv_python: python3
+
+  - name: Instal python library for PSQL
+    pip:
+      name: psycopg2
+      virtualenv: "{{APPpath}}/env"
+      virtualenv_command: virtualenv
+      virtualenv_python: python3
+
+  - name: Install a django project
+    command: "{{ APPpath }}/env/bin/django-admin.py startproject {{ APPname }} chdir={{ APPpath }}/"
+
+  - name: Create Settings File for Django
+    template: src=settings.py.j2 dest="{{ APPpath }}/{{ APPname }}/{{ APPname }}/settings.py"
+
+  - name: Make migrations
+    shell: "{{APPpath}}/env/bin/python3 {{ APPpath }}/{{ APPname }}/manage.py makemigrations"
+
+  - name: Migrate database
+    django_manage: app_path="{{ APPpath }}/{{ APPname }}"
+                   command=migrate
+                   virtualenv="{{APPpath}}/env"
+
+  - name: Get all static files
+    django_manage: app_path="{{ APPpath }}/{{ APPname }}"
+                   command=collectstatic
+                   virtualenv="{{APPpath}}/env" 
+
+  - name: Install Gunicorn
+    pip:
+      name: gunicorn
+      virtualenv: "{{APPpath}}/env"
+      virtualenv_command: virtualenv
+      virtualenv_python: python3
+
+  - name: Create Gunicorn Socket file
+    template: src=gunicorn.socket.j2 dest=/etc/systemd/system/gunicorn.socket
+
+  - name: Create Gunicorn Service file
+    template: src=gunicorn.service.j2 dest=/etc/systemd/system/gunicorn.service
+
+  - name: Start Gunicorn.socket
+    shell: "/bin/systemctl start gunicorn.socket"
+
+  - name: Enable Gunicorn.socket
+    shell: "/bin/systemctl enable gunicorn.socket"
