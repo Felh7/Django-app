@@ -29,8 +29,11 @@
     register: nginxinstalled
 
   - name: Add Nginx cofig
+    template: src=nginx_conf.j2 dest="{{ item }}"
+    loop:
+      - /etc/nginx/sites-available/Django_app
+      - /etc/nginx/sites-enabled/Django_app
     when: nginxinstalled is success
-    template: src=defaults.j2 dest=/etc/nginx/sites-available/default
 
   - name: Install PostgreSQL
     apt:
@@ -75,8 +78,14 @@
       virtualenv_command: virtualenv
       virtualenv_python: python3
 
-  - name: Install a django project
+  - name: Check if project directory exists
+    stat:
+      path: "{{APPpath}}"
+    register: app_exists
+
+  - name: Create a django project
     command: "{{APPpath}}/env/bin/django-admin startproject {{APPname}} chdir={{APPpath}}/"
+    when: not app_exists.stat.exists
 
   - name: Create Settings File for Django
     template: src=settings.py.j2 dest="{{APPpath}}/{{APPname}}/{{APPname}}/settings.py"
