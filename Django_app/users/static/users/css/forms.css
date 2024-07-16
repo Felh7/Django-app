@@ -12,7 +12,7 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: rgb(195, 109, 197);
+    background: rgb(99, 113, 200);
 }
 
 .wrapper{ 
@@ -50,6 +50,26 @@ body{
     color: #fff;
 }
 
+.wrapper .remember{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 15px;
+}
+
+.remember label input{
+    accent-color: white;
+    margin-right: 3px;
+}
+
+.remember a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.remember a:hover{
+    text-decoration: underline;
+}
 
 .wrapper .btn{
     width: 100%;
@@ -70,7 +90,7 @@ body{
 }
 
 .btn:hover{
-    color: plum;
+    color: rgb(99, 113, 200);
 }
 
 .btn:hover:disabled{

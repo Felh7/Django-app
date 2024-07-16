@@ -6,6 +6,15 @@
     <title>Home</title>
 </head>
 <body>
-    <h1>Something</h1>
+    {% if user.is_authenticated %}
+    <form action="{% url 'users:logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-info">Logout</button>
+    </form>
+    {% else %}
+    <form action="{% url 'users:login' %}" method="get">
+        <button type="submit" class="btn btn-info">Login</button>
+    </form>
+    {% endif %}
 </body>
 </html>
