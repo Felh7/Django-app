@@ -14,13 +14,7 @@
             <h1>{{ title }}</h1>
             <form method="{% block method %}get{% endblock %}">
                 {% csrf_token %}
-                <div class="input-box">
-                    {{ form.username }}
-                </div>
-                <div class="input-box">
-                    {{ form.password }}
-                </div>
-                {% block other_forms %}{% endblock %}
+                {% block input_forms%}{% endblock %}
                 {% block other_form_logic %}{% endblock %}
                 <button type="submit" class="btn", id="register_redirect"><p>{{ title }}</p></button>
                 <div class="login_register-link">

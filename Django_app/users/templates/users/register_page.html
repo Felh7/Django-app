@@ -1,9 +1,16 @@
 {% extends 'forms.html' %}
 {% block method %}post{% endblock %}
-{% block other_forms %}
+{% block input_forms %}
+    {% for field in form %}
                 <div class="input-box"> 
-                    {{ form.email }}
+                    {{ field }}
                 </div>
+                <div class="input_errors">
+                    {% for error in field.errors %}
+                    {{ error }}
+                    {% endfor %}
+                </div>
+    {% endfor %}
 {% endblock %}
 {% block login_register %}
                     <p>Already have an account? <a href="{% url 'users:login' %}" >Login</a></p>
