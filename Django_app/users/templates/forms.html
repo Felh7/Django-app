@@ -1,0 +1,32 @@
+{% load static %}
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ title }}</title>
+        <link rel="stylesheet" href="{% static 'users/css/forms.css' %}">
+        <script src="{% static 'users/js/script.js' %}"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <h1>{{ title }}</h1>
+            <form method="{% block method %}get{% endblock %}">
+                {% csrf_token %}
+                <div class="input-box">
+                    {{ form.username }}
+                </div>
+                <div class="input-box">
+                    {{ form.password }}
+                </div>
+                {% block other_forms %}{% endblock %}
+                {% block other_form_logic %}{% endblock %}
+                <button type="submit" class="btn", id="register_redirect"><p>{{ title }}</p></button>
+                <div class="login_register-link">
+                    {% block login_register %}{% endblock %}
+                </div>
+            </form>
+        </div>
+    </body>   
+</html>

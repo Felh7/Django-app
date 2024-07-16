@@ -1,0 +1,12 @@
+{% extends 'forms.html' %}
+{% block method %}post{% endblock %}
+{% block other_form_logic %}
+                <div class="remember">
+                    <label>{{ form.rememberme }}{{ form.rememberme.label }}</label>
+                    <a href="#">Forgot password?</a>
+                </div>      
+{% endblock %}
+{% block login_register %}
+                    <p>"Don't have an account?" <a href="users:register" >Register</a></p>
+{% endblock %}
+
