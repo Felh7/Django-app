@@ -2,7 +2,12 @@
 {% block method %}post{% endblock %}
 {% block input_forms %}
     {% for field in form %}
+        {% if not field.errors %}
                 <div class="input-box"> 
+                    {{ field }}
+                </div>
+        {% else %}
+                <div class="input-box-wrong"> 
                     {{ field }}
                 </div>
                 {% if forloop.last %}
@@ -18,6 +23,7 @@
                     {% endfor %}
                 </div>
                 {% endif %}
+        {% endif %}
 
     {% endfor %}
 {% endblock %}

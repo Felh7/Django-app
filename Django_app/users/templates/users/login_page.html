@@ -1,11 +1,11 @@
 {% extends 'forms.html' %}
 {% block method %}post{% endblock %}
 {% block input_forms %}
-    
-                <div class="input-box"> 
+    {% if form.non_field_errors %}
+                <div class="input-box-wrong"> 
                     {{ form.username }}
                 </div>
-                <div class="input-box"> 
+                <div class="input-box-wrong"> 
                     {{ form.password }}
                 </div>
                 <div class="input_errors_last">
@@ -13,6 +13,14 @@
                         {{ error }}
                     {% endfor %}
                 </div>
+    {% else %}
+                <div class="input-box"> 
+                    {{ form.username }}
+                </div>
+                <div class="input-box"> 
+                    {{ form.password }}
+                </div>
+    {% endif %}
     
 {% endblock %}{% block other_form_logic %}
                 <div class="remember">
