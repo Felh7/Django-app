@@ -11,6 +11,12 @@ class LoginUserForm(AuthenticationForm):
     class Meta:
         model = get_user_model()
         fields = ['username', 'password','rememberme']
+    
+    error_messages = {
+        "invalid_login": (
+            "Wrong username or password"
+        ),
+    }
 
 class RegisterUserForm(UserCreationForm):
     username =  forms.CharField(required = True, widget=forms.TextInput(attrs={ 'placeholder': 'Username', 'id': 'usrname', 'minlength': 2}))
@@ -28,6 +34,6 @@ class RegisterUserForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if get_user_model().objects.filter(email ='email').exists:
+        if get_user_model().objects.filter(email = email).exists():
             raise forms.ValidationError("This e-mail already exists")
         return email

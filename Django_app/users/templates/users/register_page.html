@@ -5,11 +5,20 @@
                 <div class="input-box"> 
                     {{ field }}
                 </div>
-                <div class="input_errors">
+                {% if forloop.last %}
+                <div class="input_errors_last">
                     {% for error in field.errors %}
-                    {{ error }}
+                    <p>{{ error }}</p>
                     {% endfor %}
                 </div>
+                {% else %}
+                <div class="input_errors">
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
     {% endfor %}
 {% endblock %}
 {% block login_register %}

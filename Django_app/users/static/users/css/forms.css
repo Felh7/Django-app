@@ -112,3 +112,17 @@ body{
 .login_register-link p a:hover{
     text-decoration: underline;
 }
+
+.wrapper .input_errors{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 15px;
+}
+
+.wrapper .input_errors_last{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 25px 15px;
+}

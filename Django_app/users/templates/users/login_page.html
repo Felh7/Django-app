@@ -8,6 +8,11 @@
                 <div class="input-box"> 
                     {{ form.password }}
                 </div>
+                <div class="input_errors_last">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
     
 {% endblock %}{% block other_form_logic %}
                 <div class="remember">
