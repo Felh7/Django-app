@@ -10,6 +10,7 @@ class LoginUser(LoginView):
     template_name = 'users/login_page.html'
     extra_context = {'title': "Login"}
     
+
 class RegisterUser(CreateView):
     form_class = RegisterUserForm
     template_name = 'users/register_page.html'

@@ -1,23 +1,56 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="stylesheet" href="{% static 'users/css/home.css' %}">
 </head>
 <body>
-    {% if user.is_authenticated %}
-    <form action="{% url 'users:logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-info">Logout</button>
-    </form>
-    {% else %}
-    <form action="{% url 'users:login' %}" method="get">
-        <button type="submit" class="btn btn-info">Login</button>
-    </form>
-    <form action="{% url 'users:register' %}" method="get">
-        <button type="submit" class="btn btn-info">register</button>
-    </form>
-    {% endif %}
+    <div class="wrap">
+        <div class='menu'>
+            <header>
+                <ul>
+                    <li class="Home-btn">
+                        <a href="{% url 'users:home'%}">
+                            <p>Home</p>
+                        </a>
+                    </li>
+                    <li class="empty_space">
+
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li>
+                        <form action="{% url 'users:logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><p class="user_form">Logout</p></button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li>
+                        <form action="{% url 'users:login' %}" method="get">
+                            <button type="submit" class="btn"><p class="user_form">Login</p></button>
+                    
+                        </form>
+                    </li>
+                    <li>
+                        <form action="{% url 'users:register' %}" method="get">
+                            <button type="submit" class="btn"><p class="user_form">Register</p></button>
+                        </form>
+                    {% endif %}
+                </ul>
+            </header>
+        </div>
+        <div class="page-layout">
+            <div class="page-body">
+                <div></div>
+            </div>
+            
+        </div>
+    </div>
 </body>
 </html>
+
+<!-- <button type="submit" class="btn"><img src="{% static 'users/imgs/user-2.png'%}"></button>-->
