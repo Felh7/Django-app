@@ -19,7 +19,9 @@
                         </a>
                     </li>
                     <li class="empty_space">
-
+                        <a href="{% url 'users:post'%}">
+                            <p>Add post</p>
+                        </a>
                     </li>
                     {% if user.is_authenticated %}
                     <li>
