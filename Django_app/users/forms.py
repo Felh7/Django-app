@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
 from django.contrib.auth import get_user_model
 from django import forms
 
@@ -37,3 +37,4 @@ class RegisterUserForm(UserCreationForm):
         if get_user_model().objects.filter(email = email).exists():
             raise forms.ValidationError("This e-mail already exists")
         return email
+

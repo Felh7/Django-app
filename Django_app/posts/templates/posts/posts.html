@@ -1,8 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'posts/css/posts.css' %}">
+
     <title>Document</title>
 </head>
 <body>
@@ -10,5 +13,12 @@
     <a href="{% url 'users:home'%}">
         <p>Home</p>
     </a>
+    <form method = 'post' enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type='reset'>
+            <p>clear<p>
+        </button>
+    </form>
 </body>
 </html>
