@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="{% static 'users/css/home.css' %}">
+    <title>Profile</title>
+    <link rel="stylesheet" href="{% static 'posts/css/profile.css' %}">
 </head>
 <body>
     <div class="wrap">
@@ -25,10 +25,10 @@
                     </li>
                     {% if user.is_authenticated %}
                     <li>
-                        <form action="{% url 'posts:profile/s' %}" method="get">
+                        <form action="{% url 'posts:profile' user.username %}" method="get">
                             <button type="submit" class="btn"><p class="user_form">Profile</p></button>
                         </form>
-                    </li>
+                    </li>       
                     <li>
                         <form action="{% url 'users:logout' %}" method="post">
                             {% csrf_token %}
