@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'posts/css/posts.css' %}">
+    <script src="{% static 'posts/js/script.js' %}"></script>
 
     <title>Document</title>
 </head>
@@ -13,12 +14,22 @@
     <a href="{% url 'users:home'%}">
         <p>Home</p>
     </a>
+  <!--  <form method = 'post' e id = "text_input_form">
+        {% csrf_token %}
+        {{ form.text }}
+    </form>
+    <form method = 'post' enctype="multipart/form-data" id = "file_input_form">
+        {% csrf_token %}
+        {{ form.file }}
+        <input type='reset' value = 'clear'/>
+        <button type="submit" class="btn", id="add_post" form ="text_input_form" ><p>Add post</p></button>
+    </form>
+    -->
     <form method = 'post' enctype="multipart/form-data">
         {% csrf_token %}
         {{ form }}
-        <button type='reset'>
-            <p>clear<p>
-        </button>
+        <button type='button' onclick="clear_file_field()" id="clear_file_btn"><p>clear</p></button>
+        <button type="submit" class="btn" id="add_post"><p>Add post</p></button>
     </form>
 </body>
 </html>

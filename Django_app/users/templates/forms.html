@@ -12,7 +12,7 @@
     <body>
         <div class="wrapper">
             <h1>{{ title }}</h1>
-            <form method="{% block method %}get{% endblock %}">
+            <form method="{% block method %}post{% endblock %}">
                 {% csrf_token %}
                 {% block input_forms%}{% endblock %}
                 {% block other_form_logic %}{% endblock %}

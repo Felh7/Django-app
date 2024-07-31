@@ -3,8 +3,8 @@ from django.contrib.auth import get_user_model
 from django import forms
 
 class LoginUserForm(AuthenticationForm):
-    username = forms.CharField(required = True, widget=forms.TextInput(attrs={ 'placeholder': 'Username', 'id': 'usrname', 'minlength': 2}))
-    password = forms.CharField(required = True, widget=forms.PasswordInput(attrs={ 'placeholder': 'Password', 'id': 'passwd', 'minlength': 6}))
+    username = forms.CharField(required = True, widget=forms.TextInput(attrs={ 'placeholder': 'Username', 'id': 'usrname', 'minlength': 2, 'maxlength': 24}))
+    password = forms.CharField(required = True, widget=forms.PasswordInput(attrs={ 'placeholder': 'Password', 'id': 'passwd', 'minlength': 6, 'maxlength': 32}))
    # email = forms.CharField(required = True, widget=forms.EmailInput(attrs={ 'placeholder': 'E-mail', 'id': 'e_mail'}))
     rememberme = forms.BooleanField(label = 'Remeber me', required = False, widget=forms.CheckboxInput())
  
@@ -19,8 +19,8 @@ class LoginUserForm(AuthenticationForm):
     }
 
 class RegisterUserForm(UserCreationForm):
-    username =  forms.CharField(required = True, widget=forms.TextInput(attrs={ 'placeholder': 'Username', 'id': 'usrname', 'minlength': 2}))
-    password1 = forms.CharField(required = True, widget=forms.PasswordInput(attrs={ 'placeholder': 'Password', 'id': 'passwd', }))
+    username =  forms.CharField(required = True, widget=forms.TextInput(attrs={ 'placeholder': 'Username', 'id': 'usrname', 'minlength': 2, 'maxlength': 24}))
+    password1 = forms.CharField(required = True, widget=forms.PasswordInput(attrs={ 'placeholder': 'Password', 'id': 'passwd', 'maxlength': 32 }))
     password2 = forms.CharField(required = True, widget=forms.PasswordInput(attrs={ 'placeholder': 'Repeat your password', 'id': 'passwdrpt', }))
     email = forms.CharField(required = True, widget=forms.EmailInput(attrs={ 'placeholder': 'E-mail', 'id': 'e_mail'}))
 
