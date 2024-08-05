@@ -1,62 +1,32 @@
+{% extends 'feed_page.html' %}
 {% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+{% block static_links %}
     <link rel="stylesheet" href="{% static 'users/css/home.css' %}">
-</head>
-<body>
-    <div class="wrap">
-        <div class='menu'>
-            <header>
-                <ul>
-                    <li class="Home-btn">
-                        <a href="{% url 'users:home'%}">
-                            <p>Home</p>
-                        </a>
-                    </li>
-                    <li class="empty_space">
-                        <a href="{% url 'posts:posts'%}">
-                            <p>Add post</p>
-                        </a>
-                    </li>
-                    {% if request.user.is_authenticated  %}
-                    <li>
-                        <form action="{% url 'posts:profile' user.username %}" method="get">
-                            <button type="submit" class="btn"><p class="user_form">Profile</p></button>
-                        </form>
-                    </li>
-                    <li>
-                        <form action="{% url 'users:logout' %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn"><p class="user_form">Logout</p></button>
-                        </form>
-                    </li>
-                    {% else %}
-                    <li>
-                        <form action="{% url 'users:login' %}" method="get">
-                            <button type="submit" class="btn"><p class="user_form">Login</p></button>
-                        </form>
-                    </li>
-                    <li>
-                        <form action="{% url 'users:register' %}" method="get">
-                            <button type="submit" class="btn"><p class="user_form">Register</p></button>
-                        </form>
-                    {% endif %}
-                </ul>
-            </header>
-        </div>
-        <div class="page-layout">
-            <div class="page-body">
-                <div></div>
-            </div>
-            
-        </div>
-    </div>
-</body>
-</html>
+{% endblock %}
+{% block feed_body %}
+                <div class="post-body">
+                    {% for p in posts %}
+                        <div>
+                            <span>{{ p.author }}</span>
+                            <span>
+                            {% if request.user.is_authenticated and request.user != p.author %}
+                                <script>
+                                    var csrftoken = '{{ csrf_token }}';
+                                    var ajax_url = "{% url 'posts:subscribe_ajax' %}";
+                                </script>
+                                <button id="subscribe-btn">Subscribe</button>
+                            {% endif %}
+                            </span>
+                        <div>
+                        <div>{{ p.text }}</div>
+                        {% if p.get_file_url %}
+                        <div>
+                            <img src = "{{ p.get_file_url }}">
+                        </div>
+                        {% endif %}
+                    {% endfor %} 
+                    </div>
+{% endblock %}
+
 
 <!-- <button type="submit" class="btn"><img src="{% static 'users/imgs/user-2.png'%}"></button>-->
