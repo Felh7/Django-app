@@ -41,8 +41,7 @@ class profile_page(ListView):
     context_object_name = 'posts'
     def get_queryset(self):
         username = self.kwargs['username']
-        user = User.objects.get(username=username)
-        return UserPost.objects.filter(author=user)
+        return UserPost.objects.select_related('author').filter(author__username=username)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['username'] = self.kwargs['username']
