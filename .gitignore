@@ -138,3 +138,8 @@ GitHub.sublime-settings
 .history
 .DS_Store
 launch.json
+
+# uploads 
+*upload
+# imgs
+*imgs
