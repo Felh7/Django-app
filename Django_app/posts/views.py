@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, CreateView, FormView
+from django.views.generic import TemplateView, CreateView, FormView, ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required
 from .forms import UploadFileForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from .models import UserPost
 
 
 # Create your views here.
@@ -13,18 +14,23 @@ from django.contrib.auth.models import User
 class post_page(FormView):
     form_class = UploadFileForm
     template_name='posts/posts.html'
-    checked = True
     success_url = reverse_lazy('posts:posts')
     def form_valid(self, form):
-        username = self.request.user.username
-        form.instance.username = username
+        form.instance.author = self.request.user
         form.save()
         return super().form_valid(form)
 
-class profile_page(DetailView):
-    model = User
+class profile_page(ListView):
+    model = UserPost
     template_name='posts/profile.html'
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
+    context_object_name = 'posts'
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = User.objects.get(username=username)
+        return UserPost.objects.filter(author=user)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['username'] = self.kwargs['username']
+        return context
     
 
