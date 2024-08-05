@@ -25,7 +25,7 @@ class home(LoginRequiredMixin,ListView):
     context_object_name = 'posts'
     def get_queryset(self):
         return UserPost.objects.select_related('author').filter(
-        author__in=self.request.user.subscriptions.values_list('subscribed_to', flat=True)
+        author__in=self.request.user.subscriptions.values_list('subscribed_to', flat=True).order_by('-created_at')
         )
 
 

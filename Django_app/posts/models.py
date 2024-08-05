@@ -8,6 +8,7 @@ class UserPost(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  
     text = models.CharField(max_length=1024, blank=True)
     file = models.FileField(upload_to='upload', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     def clean(self):
         if not (self.text or self.file):
             raise ValidationError("You must specify either text or file")

@@ -7,11 +7,11 @@
 {% endblock %}
 {% block feed_body %}
                 <div class="post-body">
-                {% for p in posts %}
+                {% for post_data in timediff_posts %}
                     <div>
-                        <span>{{ p.author }}</span>
+                        <span>{{ post_data.post.author }}</span> 
                         <span>
-                        {% if request.user.is_authenticated and request.user != p.author %}
+                        {% if request.user.is_authenticated and request.user != post_data.post.author %}
                             <script>
                                 var csrftoken = '{{ csrf_token }}';
                                 var ajax_url = "{% url 'posts:subscribe_ajax' %}";
@@ -19,11 +19,14 @@
                             <button id="subscribe-btn">Subscribe</button>
                         {% endif %}
                         </span>
+                        <span>
+                           {{ post_data.time_diff }}
+                        </span>
                     <div>
-                    <div>{{ p.text }}</div>
-                    {% if p.get_file_url %}
+                    <div>{{ post_data.post.text }}</div>
+                    {% if post_data.post.get_file_url %}
                     <div>
-                        <img src = "{{ p.get_file_url }}">
+                        <img src = "{{ post_data.post.get_file_url }}">
                     </div>
                     {% endif %}
                 {% endfor %} 
