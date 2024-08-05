@@ -2,14 +2,29 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, CreateView, FormView, ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from .forms import UploadFileForm
+from django.http import Http404
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from .models import UserPost
+from .models import UserPost, UserFollowers, UserSubscriptions
 
 
 # Create your views here.
+def subscribe_ajax(request):
+    if request.method == 'POST':
+        author_username = request.POST.get('author')
+        author = User.objects.get(username=author_username)
+
+        subscribed, created = UserSubscriptions.objects.get_or_create(user=request.user, subscribed_to=author)
+        if created:
+            UserFollowers.objects.get_or_create(follower=request.user, user=author)
+            return JsonResponse({'subscribed': True})
+        else:
+          return JsonResponse({'subscribed': False})
+    else:
+        return Http404
 
 class post_page(FormView):
     form_class = UploadFileForm
@@ -33,4 +48,5 @@ class profile_page(ListView):
         context['username'] = self.kwargs['username']
         return context
     
+
 

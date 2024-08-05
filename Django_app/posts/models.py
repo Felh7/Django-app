@@ -15,3 +15,13 @@ class UserPost(models.Model):
         if self.file:
             return self.file.url
         return None
+    
+class UserFollowers(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='followers')  
+    follower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='followed_by')  
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class UserSubscriptions(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscriptions')  
+    subscribed_to = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscribed_to')  
+    created_at = models.DateTimeField(auto_now_add=True)

@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
     <link rel="stylesheet" href="{% static 'posts/css/profile.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'posts/js/script.js' %}"></script>
+
 </head>
 <body>
     <div class="wrap">
@@ -51,7 +54,28 @@
         </div>
         <div class="page-layout">
             <div class="page-body">
-                <div>{{ request.user.username }}</div>
+                <div class="post-body">
+                {% for p in posts %}
+                    <div>
+                        <span>{{ p.author }}</span>
+                        <span>
+                        {% if request.user.is_authenticated and request.user != p.author %}
+                            <script>
+                                var csrftoken = '{{ csrf_token }}';
+                                var ajax_url = "{% url 'posts:subscribe_ajax' %}";
+                             </script>
+                            <button id="subscribe-btn">Subscribe</button>
+                        {% endif %}
+                        </span>
+                    <div>
+                    <div>{{ p.text }}</div>
+                    {% if p.get_file_url %}
+                    <div>
+                        <img src = "{{ p.get_file_url }}">
+                    </div>
+                    {% endif %}
+                {% endfor %} 
+                </div>
             </div>
             
         </div>
