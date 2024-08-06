@@ -1,6 +1,7 @@
 $(document).ready(function() {
-    $('#subscribe-btn').click(function() {
-        var author = window.location.pathname.split('/').at(-1)
+    $('.subscribe-btn').click(function() {
+        var author = window.location.pathname.split('/').at(-1);
+        var button = $('.subscribe-btn');
         $.ajax({
             type: 'POST',
             url: ajax_url,
@@ -9,11 +10,16 @@ $(document).ready(function() {
                 'csrfmiddlewaretoken': csrftoken
             },
             success: function(data) {
+                console.log('succes')
                 if (data.subscribed) {
-                    $(this).text('Unsubscribe');
+                    button.text('Unsubscribe');
                 } else {
-                    $(this).text('Subscribe');
+                    button.text('Subscribe');
                 }
+            },
+            error: function(xhr, status, error) {
+                console.log('error');
+                console.log(xhr.responseText);
             }
         });
     });
