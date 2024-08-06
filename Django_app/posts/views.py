@@ -10,8 +10,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from .models import UserPost, UserFollowers, UserSubscriptions
 from django.utils import timezone
-from datetime import datetime
-
 
 # Create your views here.
 def subscribe_ajax(request):
@@ -24,7 +22,7 @@ def subscribe_ajax(request):
             UserFollowers.objects.get_or_create(follower=request.user, user=author)
             return JsonResponse({'subscribed': True})
         else:
-          return JsonResponse({'subscribed': False})
+            return JsonResponse({'subscribed': False})
     else:
         return Http404
 
@@ -41,6 +39,16 @@ class profile_page(ListView):
     model = UserPost
     template_name='posts/profile.html'
     context_object_name = 'posts'
+    
+    def get(self, request, *args, **kwargs):
+        username = self.kwargs['username']
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            # If the user does not exist, raise a 404 error
+            raise Http404("User not found")
+        return super().get(request, *args, **kwargs)
+
     def get_queryset(self):
         username = self.kwargs['username']
         return UserPost.objects.select_related('author').filter(author__username=username).order_by('-created_at')
