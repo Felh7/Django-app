@@ -13,7 +13,9 @@
                         {% if request.user.is_authenticated and request.user != post_data.post.author %}
                             <script>
                                 var csrftoken = '{{ csrf_token }}';
-                                var ajax_url = "{% url 'posts:subscribe_ajax' %}";
+                                var subscribe_ajax_url = "{% url 'posts:subscribe_ajax' %}";
+                                var unsubscribe_ajax_url = "{% url 'posts:unsubscribe_ajax' %}";
+                                var checksubscription_ajax = "{% url 'posts:checksubscription_ajax' %}";
                              </script>
                             <button class="subscribe-btn">Subscribe</button>
                         {% endif %}

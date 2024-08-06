@@ -10,8 +10,22 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from .models import UserPost, UserFollowers, UserSubscriptions
 from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
+
 
 # Create your views here.
+def checksubscription_ajax(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        author_username = request.POST.get('author')
+        try:
+            author = User.objects.get(username=author_username)
+            subscribed = UserSubscriptions.objects.filter(user=request.user, subscribed_to=author).exists()
+            return JsonResponse({'subscribed': subscribed})
+        except ObjectDoesNotExist:
+            return JsonResponse({'subscribed': False})
+    else:
+        return JsonResponse({'subscribed': False})
+    
 def subscribe_ajax(request):
     if request.method == 'POST':
         author_username = request.POST.get('author')
@@ -26,6 +40,21 @@ def subscribe_ajax(request):
     else:
         return Http404
 
+def unsubscribe_ajax(request):
+    if request.method == 'POST':
+        author_username = request.POST.get('author')
+        try:
+            author = User.objects.get(username=author_username)
+            UserSubscriptions.objects.filter(user=request.user, subscribed_to=author).delete()
+            UserFollowers.objects.filter(follower=request.user, user=author).delete()
+
+            return JsonResponse({'subscribed': False})
+        except ObjectDoesNotExist:
+            return JsonResponse({'subscribed': True, 'error': 'Author not found'})
+    else:
+        return JsonResponse({'subscribed': True})
+
+    
 class post_page(FormView):
     form_class = UploadFileForm
     template_name='posts/posts.html'
@@ -39,7 +68,7 @@ class profile_page(ListView):
     model = UserPost
     template_name='posts/profile.html'
     context_object_name = 'posts'
-    
+
     def get(self, request, *args, **kwargs):
         username = self.kwargs['username']
         try:

@@ -26,8 +26,8 @@ class home(LoginRequiredMixin,ListView):
     context_object_name = 'posts'
     def get_queryset(self):
         return UserPost.objects.select_related('author').filter(
-        author__in=self.request.user.subscriptions.values_list('subscribed_to', flat=True).order_by('-created_at')
-        )
+        author__in=self.request.user.subscriptions.values_list('subscribed_to', flat=True)
+        ).order_by('-created_at')
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['timediff_posts'] = [
