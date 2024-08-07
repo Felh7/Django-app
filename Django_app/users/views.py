@@ -41,7 +41,7 @@ class home(LoginRequiredMixin,ListView):
         hours = time_diff.seconds // 3600
         minutes = (time_diff.seconds // 60) % 60
         seconds = time_diff.seconds % 60
-        days = hours // 24
+        days = time_diff.days
         #return f"{hours} hours, {minutes} minutes, {seconds} seconds ago"
 
         if days > 0:

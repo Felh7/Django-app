@@ -3,7 +3,7 @@ from django.views.generic import TemplateView, CreateView, FormView, ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from .forms import UploadFileForm
+from .forms import PostCreateForm
 from django.http import Http404
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -54,9 +54,46 @@ def unsubscribe_ajax(request):
     else:
         return JsonResponse({'subscribed': True})
 
+def CheckIfLiked_ajax(request):
+    if request.method == 'GET' and request.user.is_authenticated:
+        post_id = request.GET.get('post_id')
+        try:
+            userpost = UserPost.objects.get(id=post_id)
+        except ObjectDoesNotExist:
+            return JsonResponse({'error': 'Post not found'}, status=404)
+        if userpost.liked_by.filter(id=request.user.id).exists():
+            return JsonResponse({'liked': True})
+        else:
+            return JsonResponse({'liked': False})
+    else:
+        return JsonResponse({'error': 'You must be logged in to like a post'}, status=401)
     
+def likePost_ajax(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        post_id = request.POST.get('post_id')
+        try:
+            userpost = UserPost.objects.get(id=post_id)
+        except ObjectDoesNotExist:
+            return JsonResponse({'error': 'Post not found'}, status=404)
+        userpost.liked_by.add(request.user)
+        return JsonResponse({'liked': True})
+    else:
+        return JsonResponse({'error': 'You must be logged in to like a post'}, status=401)
+
+def unlikePost_ajax(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        post_id = request.POST.get('post_id')
+        try:
+            userpost = UserPost.objects.get(id=post_id)
+        except ObjectDoesNotExist:
+            return JsonResponse({'error': 'Post not found'}, status=404)
+        userpost.liked_by.remove(request.user)
+        return JsonResponse({'liked': False})
+    else:
+         return JsonResponse({'error': 'You must be logged in to like a post'}, status=401)
+
 class post_page(FormView):
-    form_class = UploadFileForm
+    form_class = PostCreateForm
     template_name='posts/posts.html'
     success_url = reverse_lazy('posts:posts')
     def form_valid(self, form):
@@ -81,6 +118,7 @@ class profile_page(ListView):
     def get_queryset(self):
         username = self.kwargs['username']
         return UserPost.objects.select_related('author').filter(author__username=username).order_by('-created_at')
+        
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['username'] = self.kwargs['username']
@@ -95,9 +133,8 @@ class profile_page(ListView):
         hours = time_diff.seconds // 3600
         minutes = (time_diff.seconds // 60) % 60
         seconds = time_diff.seconds % 60
-        days = hours // 24
+        days = time_diff.days
         #return f"{hours} hours, {minutes} minutes, {seconds} seconds ago"
-
         if days > 0:
             if days > 1:
                 return f"{days} days ago"

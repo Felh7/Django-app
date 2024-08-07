@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'posts/css/posts.css' %}">
-    <script src="{% static 'posts/js/script.js' %}"></script>
+    <script src="{% static 'posts/js/posts.js' %}"></script>
 
     <title>Document</title>
 </head>
@@ -27,8 +27,20 @@
     -->
     <form method = 'post' enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form }}
-        <button type='button' onclick="clear_file_field()" id="clear_file_btn"><p>clear</p></button>
+        {{ form.text }}
+        <div>
+        {{form.image}}
+        <button type='button' onclick="clear_file_field('image_input_field')" class="clear_btn"><p>clear</p></button>
+        </div>
+      <!--  <div>
+        {{form.video}}
+        <button type='button' onclick="clear_file_field('video_input_field')" class="clear_btn"><p>clear</p></button>
+        </div>
+        <div>
+        {{form.file}}
+        <button type='button' onclick="clear_file_field('file_input_field')" class="clear_btn"><p>clear</p></button>
+        </div>        -->
+
         <button type="submit" class="btn" id="add_post"><p>Add post</p></button>
     </form>
 </body>

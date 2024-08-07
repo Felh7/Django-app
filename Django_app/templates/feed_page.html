@@ -1,9 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{ title }}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
     {% block static_links %}
     {% endblock %}
 
@@ -51,8 +55,38 @@
         </div>
         <div class="page-layout">
             <div class="page-body">
-                {% block feed_body %}
-                {% endblock %}
+                <script>
+                    var csrftoken = '{{ csrf_token }}';
+                    var like_ajax_url = "{% url 'posts:likepost_ajax' %}";
+                    var unlike_ajax_url = "{% url 'posts:unlikepost_ajax' %}";
+                    var CheckIfLiked_ajax_url = "{% url 'posts:checkifliked_ajax' %}";
+                </script>
+                {% for post_data in timediff_posts %}
+                        <div class="post-body">
+                            <span>{{ post_data.post.author }}</span>
+                            {% block sub_button %} {% endblock %}
+                            <span>
+                                {{ post_data.time_diff }}
+                            </span>
+                            <div>{{ post_data.post.text }}</div>
+                            {% if post_data.post.image %}
+                            <div>
+                                <img src = "{{ post_data.post.image.url }}">
+                            </div>
+                            {% endif %}
+                            <div class="reactions">
+                                <span><button class="like-btn" data-post-id="{{post_data.post.id}}">Like</button></span>
+                                
+                            </div>
+                            
+                          <!--  {% if post_data.post.video %}
+                            <video>
+                                <source src="{{ post_data.post.video.url }}" type="video/mp4">
+                            </video>
+                            {% endif %}
+                            -->
+                        </div>
+                {% endfor %}
             </div>           
         </div>
     </div>

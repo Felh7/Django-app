@@ -79,6 +79,10 @@ TEMPLATES = [
     },
 ]
 
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+
 WSGI_APPLICATION = "Django_app.wsgi.application"
 
 
