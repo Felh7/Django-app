@@ -12,11 +12,11 @@
     <body>
         <div class="wrapper">
             <h1>{{ title }}</h1>
-            <form method="{% block method %}post{% endblock %}">
+            <form method="post">
                 {% csrf_token %}
                 {% block input_forms%}{% endblock %}
                 {% block other_form_logic %}{% endblock %}
-                <button type="submit" class="btn", id="register_redirect"><p>{{ title }}</p></button>
+                <button type="submit" class="btn", id="register_redirect"><p>{% block confirm_btn_name %}{{ title }}{% endblock %}</p></button>
                 <div class="login_register-link">
                     {% block login_register %}{% endblock %}
                 </div>

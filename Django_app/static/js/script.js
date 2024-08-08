@@ -2,7 +2,6 @@
 $(document).ready(function() {
     $(".post-body").each(function() {
         var $this = $(this)
-        console.log($this)
         var $button = $this.find(".like-btn")
         var post_id = $button.data("post-id");
 
@@ -20,7 +19,6 @@ $(document).ready(function() {
             } else {
                 $this.find(".unlike-btn").text('like').removeClass("unlike-btn").addClass("like-btn");
             }
-            console.log('succes')
           }
         });
       });

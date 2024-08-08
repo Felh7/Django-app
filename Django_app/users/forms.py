@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm,PasswordResetForm
 from django.contrib.auth import get_user_model
 from django import forms
 
@@ -38,3 +38,8 @@ class RegisterUserForm(UserCreationForm):
             raise forms.ValidationError("This e-mail already exists")
         return email
 
+class ResetPasswordForm(PasswordResetForm):
+    email = forms.EmailField(
+        max_length=254,
+        widget=forms.EmailInput(attrs={"autocomplete": "email", 'placeholder': 'E-mail', 'id': 'e_mail'}),
+    )

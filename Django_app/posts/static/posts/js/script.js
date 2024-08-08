@@ -34,7 +34,6 @@ $(document).ready(function() {
             url: url,
             data: data,
             success: function(data) {
-                console.log('success')
                 if (data.subscribed) {
                     $('.subscribe-btn').text('Unsubscribe').removeClass('subscribe-btn').addClass('unsubscribe-btn');
                 }
