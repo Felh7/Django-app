@@ -11,7 +11,11 @@
     </head>
     <body>
         <div class="wrapper">
+            {% if title|length < 10 %}
             <h1>{{ title }}</h1>
+            {% else %}
+            <h2>{{ title }}</h2>
+            {% endif %}
             <form method="post">
                 {% csrf_token %}
                 {% block input_forms%}{% endblock %}

@@ -36,6 +36,7 @@ class PasswordResetConfirm(PasswordResetConfirmView):
 class home(LoginRequiredMixin,ListView):
     template_name='users/home.html'
     context_object_name = 'posts'
+    paginate_by = 5
     def get_queryset(self):
         return UserPost.objects.select_related('author').filter(
         author__in=self.request.user.subscriptions.values_list('subscribed_to', flat=True)
@@ -47,6 +48,12 @@ class home(LoginRequiredMixin,ListView):
             for post in context['posts']
         ]
         return context
+    
+    def get_template_names(self, *args, **kwargs):
+        if self.request.htmx:
+            return "posts.html"
+        else:
+            return self.template_name
 
     def get_time_diff(self, created_at):
         time_diff = timezone.now() - created_at

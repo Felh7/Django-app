@@ -7,7 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{ title }}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/shortcuts/infinite.min.js"></script>
     <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/htmx.min.js' %}" defer></script>
     {% block static_links %}
     {% endblock %}
 
@@ -23,7 +26,7 @@
                         </a>
                     </li>
                     <li class="empty_space">
-                        <a href="{% url 'posts:posts'%}">
+                        <a href="{% url 'posts:add_post'%}">
                             <p>Add post</p>
                         </a>
                     </li>
@@ -61,33 +64,12 @@
                     var unlike_ajax_url = "{% url 'posts:unlikepost_ajax' %}";
                     var CheckIfLiked_ajax_url = "{% url 'posts:checkifliked_ajax' %}";
                 </script>
-                {% for post_data in timediff_posts %}
-                        <div class="post-body">
-                            <span>{{ post_data.post.author }}</span>
-                            {% block sub_button %} {% endblock %}
-                            <span>
-                                {{ post_data.time_diff }}
-                            </span>
-                            <div>{{ post_data.post.text }}</div>
-                            {% if post_data.post.image %}
-                            <div>
-                                <img src = "{{ post_data.post.image.url }}">
-                            </div>
-                            {% endif %}
-                            <div class="reactions">
-                                <span><button class="like-btn" data-post-id="{{post_data.post.id}}">Like</button></span>
-                                
-                            </div>
-                            
-                          <!--  {% if post_data.post.video %}
-                            <video>
-                                <source src="{{ post_data.post.video.url }}" type="video/mp4">
-                            </video>
-                            {% endif %}
-                            -->
-                        </div>
-                {% endfor %}
-            </div>           
+                <div>
+                    {% include 'posts.html' with timediff_posts=timediff_posts %}
+                </div>
+                              
+            </div>      
+              
         </div>
     </div>
 </body>

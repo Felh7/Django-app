@@ -94,8 +94,8 @@ def unlikePost_ajax(request):
 
 class post_page(FormView):
     form_class = PostCreateForm
-    template_name='posts/posts.html'
-    success_url = reverse_lazy('posts:posts')
+    template_name='posts/add_post.html'
+    success_url = reverse_lazy('posts:add_post')
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.save()
@@ -118,6 +118,12 @@ class profile_page(ListView):
     def get_queryset(self):
         username = self.kwargs['username']
         return UserPost.objects.select_related('author').filter(author__username=username).order_by('-created_at')
+    
+    def get_template_names(self, *args, **kwargs):
+        if self.request.htmx:
+            return "posts.html"
+        else:
+            return self.template_name
         
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

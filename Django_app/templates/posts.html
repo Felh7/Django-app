@@ -1,0 +1,34 @@
+{% for post_data in timediff_posts %}
+                        {% if forloop.last %}
+                            <div 
+                                hx-trigger="revealed"
+                                hx-get="{% url 'users:home' %}?page={{ page_obj.number|add:1 }}"
+                                hx-swap="afterend"
+                            ></div>
+                        {% else %}
+                        <div class="post-body">
+                            <span>{{ post_data.post.author }}</span>
+                            {% block sub_button %} {% endblock %}
+                            <span>
+                                {{ post_data.time_diff }}
+                            </span>
+                            <div>{{ post_data.post.text }}</div>
+                            {% if post_data.post.image %}
+                            <div>
+                                <img src = "{{ post_data.post.image.url }}">
+                            </div>
+                            {% endif %}
+                            <div class="reactions">
+                                <span><button class="like-btn" data-post-id="{{post_data.post.id}}">Like</button></span>
+                                
+                            </div>
+                            
+                          <!--  {% if post_data.post.video %}
+                            <video>
+                                <source src="{{ post_data.post.video.url }}" type="video/mp4">
+                            </video>
+                            {% endif %}
+                            -->
+                        </div>
+                        {% endif %}
+                {% endfor %}

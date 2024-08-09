@@ -27,6 +27,11 @@ body{
     text-align: center;
 }
 
+.wrapper h2{
+    font-size: 30px;
+    text-align: center;
+}
+
 .wrapper .input-box{
     width: 100%;
     height: 50px; 
