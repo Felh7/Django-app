@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .forms import PostCreateForm
 from django.http import Http404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from .models import UserPost, UserFollowers, UserSubscriptions
@@ -105,6 +105,7 @@ class profile_page(ListView):
     model = UserPost
     template_name='posts/profile.html'
     context_object_name = 'posts'
+    paginate_by = 5
 
     def get(self, request, *args, **kwargs):
         username = self.kwargs['username']
@@ -132,6 +133,8 @@ class profile_page(ListView):
             {'post': post, 'time_diff': self.get_time_diff(post.created_at)}
             for post in context['posts']
         ]
+        context['load_more_url'] = reverse('posts:profile', args=[self.kwargs['username']]) 
+
         return context
 
     def get_time_diff(self, created_at):

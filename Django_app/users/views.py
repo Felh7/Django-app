@@ -47,6 +47,8 @@ class home(LoginRequiredMixin,ListView):
             {'post': post, 'time_diff': self.get_time_diff(post.created_at)}
             for post in context['posts']
         ]
+        context['load_more_url'] = reverse('users:home') 
+
         return context
     
     def get_template_names(self, *args, **kwargs):
