@@ -5,58 +5,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {{ title }}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/shortcuts/infinite.min.js"></script>
     <script src="{% static 'js/script.js' %}"></script>
     <script src="{% static 'js/htmx.min.js' %}" defer></script>
+    <link rel="stylesheet" href="{% static '/css/feed_page.css' %}">
     {% block static_links %}
     {% endblock %}
+    <title>{{ title }}</title>
 
 </head>
 <body>
     <div class="wrap">
-        <div class='menu'>
-            <header>
-                <ul>
-                    <li class="Home-btn">
-                        <a href="{% url 'users:home'%}">
-                            <p>Home</p>
-                        </a>
-                    </li>
-                    <li class="empty_space">
-                        <a href="{% url 'posts:add_post'%}">
-                            <p>Add post</p>
-                        </a>
-                    </li>
-                    {% if request.user.is_authenticated %}
-                    <li>
-                        <form action="{% url 'posts:profile' user.username %}" method="get">
-                            <button type="submit" class="btn"><p class="user_form">Profile</p></button>
-                        </form>
-                    </li>       
-                    <li>
-                        <form action="{% url 'users:logout' %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn"><p class="user_form">Logout</p></button>
-                        </form>
-                    </li>
-                    {% else %}
-                    <li>
-                        <form action="{% url 'users:login' %}" method="get">
-                            <button type="submit" class="btn"><p class="user_form">Login</p></button>
-                        </form>
-                    </li>
-                    <li>
-                        <form action="{% url 'users:register' %}" method="get">
-                            <button type="submit" class="btn"><p class="user_form">Register</p></button>
-                        </form>
-                    {% endif %}
-                </ul>
-            </header>
-        </div>
         <div class="page-layout">
+            <div class='menu'>
+                <header>
+                    <ul>
+                        <li class="Home-btn">
+                            <a href="{% url 'users:home'%}">
+                                <p>Home</p>
+                            </a>
+                        </li>
+                        <li class="empty_space">
+                            <a href="{% url 'posts:add_post'%}">
+                                <p>Add post</p>
+                            </a>
+                        </li>
+                        {% if request.user.is_authenticated %}
+                        <li>
+                            <form action="{% url 'posts:profile' user.username %}" method="get">
+                                <button type="submit" class="btn"><p class="user_form">Profile</p></button>
+                            </form>
+                        </li>       
+                        <li>
+                            <form action="{% url 'users:logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn"><p class="user_form">Logout</p></button>
+                            </form>
+                        </li>
+                        {% else %}
+                        <li>
+                            <form action="{% url 'users:login' %}" method="get">
+                                <button type="submit" class="btn"><p class="user_form">Login</p></button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="{% url 'users:register' %}" method="get">
+                                <button type="submit" class="btn"><p class="user_form">Register</p></button>
+                            </form>
+                        {% endif %}
+                    </ul>
+                </header>
+            </div>
             <div class="page-body">
                 <script>
                     var csrftoken = '{{ csrf_token }}';
@@ -64,7 +65,7 @@
                     var unlike_ajax_url = "{% url 'posts:unlikepost_ajax' %}";
                     var CheckIfLiked_ajax_url = "{% url 'posts:checkifliked_ajax' %}";
                 </script>
-                <div>
+                <div class="posts-holder">
                     {% include 'posts.html' %}
                 </div>
                               
