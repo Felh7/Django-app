@@ -104,7 +104,7 @@ body{
 
 .page-body{
     display: flex;
-    width: 700px;
+    width: 50%;
     height: 100%;
     margin: 80px 0 0 0;
     border-radius: 20px;
@@ -114,14 +114,6 @@ body{
 .menu .Home-btn{
     display: flex;
     width: 180px;
-}
-
-.side-menu{
-    display: flex;
-    top: -20px;
-    height: 300px;
-    width: 200px;
-    background-color: blue;
 }
 
 .posts-holder{
@@ -145,4 +137,35 @@ body{
 
 .post-body .time-diff-post{
     font-size: 12px;
+}
+
+.side-bars{
+    display: flex;
+    background-color: bisque;
+    z-index: 1;
+}
+
+.left-side-bar{
+    position: fixed;
+    display: flex;
+    background-color: bisque;
+    width: 10%;
+    height: 12%;
+    left: 15%;
+}
+
+.right-side-bar{
+    position: fixed;
+    display: flex;
+
+    width: 10%;
+    height: 12%;
+    right: 15%;
+}
+
+.side-bar-content{
+    position: fixed;
+    display: flex;
+    width: 100%;
+    height: 20%;
 }

@@ -12,7 +12,58 @@ from .models import UserPost, UserFollowers, UserSubscriptions
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 
+class PostsDisplayView(ListView):
+    model = UserPost
+    template_name= None
+    context_object_name = 'posts'
+    paginate_by = 5
+    load_more_url = None
+    title = 'PostDisplay'
 
+    def get_template_names(self, *args, **kwargs):
+        if self.request.htmx:
+            return "posts.html"
+        else:
+            return self.template_name
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['timediff_posts'] = [
+            {'post': post, 'time_diff': self.get_time_diff(post.created_at)}
+            for post in context['posts']
+        ]
+        context['load_more_url'] = self.load_more_url
+        context['title'] = self.title
+        return context
+
+    def get_time_diff(self, created_at):
+        time_diff = timezone.now() - created_at
+        hours = time_diff.seconds // 3600
+        minutes = (time_diff.seconds // 60) % 60
+        seconds = time_diff.seconds % 60
+        days = time_diff.days
+        #return f"{hours} hours, {minutes} minutes, {seconds} seconds ago"
+        if days > 0:
+            if days > 1:
+                return f"{days} days ago"
+            else:
+                return f"{days} day ago"
+        elif hours >0:
+            if hours > 1:
+                return  f"{hours} hours ago"
+            else:
+                return  f"{hours} hour ago"
+        elif minutes > 0:
+            if minutes > 1:
+                return  f"{minutes} minutes ago"
+            else:
+                return  f"{minutes} minute ago"
+        else:
+            if seconds > 1:
+                return  f"{seconds} seconds ago"
+            else:
+                return  f"{seconds} second ago"
+            
 # Create your views here.
 def checksubscription_ajax(request):
     if request.method == 'POST' and request.user.is_authenticated:
@@ -101,11 +152,8 @@ class post_page(FormView):
         form.save()
         return super().form_valid(form)
 
-class profile_page(ListView):
-    model = UserPost
+class profile_page(PostsDisplayView):
     template_name='posts/profile.html'
-    context_object_name = 'posts'
-    paginate_by = 5
 
     def get(self, request, *args, **kwargs):
         username = self.kwargs['username']
@@ -118,52 +166,36 @@ class profile_page(ListView):
 
     def get_queryset(self):
         username = self.kwargs['username']
-        return UserPost.objects.select_related('author').filter(author__username=username).order_by('-created_at')
-    
-    def get_template_names(self, *args, **kwargs):
-        if self.request.htmx:
-            return "posts.html"
-        else:
-            return self.template_name
+        return self.model.objects.select_related('author').filter(author__username=username).order_by('-created_at')
         
     def get_context_data(self, **kwargs):
+        self.load_more_url = reverse('posts:profile', args=[self.kwargs['username']]) 
+        self.title = self.kwargs['username']
         context = super().get_context_data(**kwargs)
         context['username'] = self.kwargs['username']
-        context['timediff_posts'] = [
-            {'post': post, 'time_diff': self.get_time_diff(post.created_at)}
-            for post in context['posts']
-        ]
-        context['load_more_url'] = reverse('posts:profile', args=[self.kwargs['username']]) 
 
         return context
 
-    def get_time_diff(self, created_at):
-        time_diff = timezone.now() - created_at
-        hours = time_diff.seconds // 3600
-        minutes = (time_diff.seconds // 60) % 60
-        seconds = time_diff.seconds % 60
-        days = time_diff.days
-        #return f"{hours} hours, {minutes} minutes, {seconds} seconds ago"
-        if days > 0:
-            if days > 1:
-                return f"{days} days ago"
-            else:
-                return f"{days} day ago"
-        elif hours >0:
-            if hours > 1:
-                return  f"{hours} hours ago"
-            else:
-                return  f"{hours} hour ago"
-        elif minutes > 0:
-            if minutes > 1:
-                return  f"{minutes} minutes ago"
-            else:
-                return  f"{minutes} minute ago"
-        else:
-            if seconds > 1:
-                return  f"{seconds} seconds ago"
-            else:
-                return  f"{seconds} second ago"
+class home(LoginRequiredMixin, PostsDisplayView):
+    template_name='posts/home.html'
+    title = 'Home'
+    load_more_url = reverse_lazy('posts:home') 
+    
+    def get_queryset(self):
+        return self.model.objects.select_related('author').filter(
+        author__in=self.request.user.subscriptions.values_list('subscribed_to', flat=True)
+        ).order_by('-created_at')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+
+
+        
+
+
+   
 
        
 

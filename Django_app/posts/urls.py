@@ -5,6 +5,7 @@ from django.contrib.auth.views import LogoutView
 app_name = 'posts'
 
 urlpatterns = [
+    path('', views.home.as_view(), name='home'),
     path('addpost', views.post_page.as_view(), name='add_post'),
     path('subscribe_ajax', views.subscribe_ajax, name = 'subscribe_ajax'),
     path('unsubscribe_ajax', views.unsubscribe_ajax, name = 'unsubscribe_ajax'),

@@ -1,5 +1,5 @@
 
-$(document).ready(function() {
+/*$(document).ready(function() {
     $(".post-body").each(function() {
         var $this = $(this)
         var $button = $this.find(".like-btn")
@@ -16,9 +16,7 @@ $(document).ready(function() {
             // Update the like button's state based on the response
             if (response.liked) {
                 $this.find(".like-btn").text('unlike').removeClass('like-btn').addClass("unlike-btn");
-            } else {
-                $this.find(".unlike-btn").text('like').removeClass("unlike-btn").addClass("like-btn");
-            }
+            } 
           }
         });
       });
@@ -52,4 +50,8 @@ $(document).ready(function() {
             }
         });
     });
+});*/
+
+$(".posts-holder").on("click", ".like-btn, .unlike-btn", function() {
+    // Your click event handler code here
 });
