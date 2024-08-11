@@ -4,6 +4,7 @@
                                 hx-trigger="revealed"
                                 hx-get="{{ load_more_url }}?page={{ page_obj.number|add:1 }}"
                                 hx-swap="afterend"
+                               
                             ></div>
                         {% else %}
                         <div class="post-body">
