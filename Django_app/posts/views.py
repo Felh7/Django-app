@@ -189,6 +189,17 @@ class home(LoginRequiredMixin, PostsDisplayView):
         context = super().get_context_data(**kwargs)
         return context
 
+class liked_posts_page(LoginRequiredMixin, PostsDisplayView):
+    template_name='posts/liked_posts.html'
+    title = 'Liked'
+    load_more_url = reverse_lazy('posts:liked-posts-page') 
+
+    def get_queryset(self):
+        return self.model.objects.select_related('author').filter(liked_by__username=self.request.user).order_by('-created_at')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 

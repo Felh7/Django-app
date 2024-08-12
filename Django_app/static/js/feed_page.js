@@ -1,10 +1,14 @@
 
 $(document).ready(function() {
+    SetSavedTheme();
     UpdateLikeButtons();
     $(document).on('htmx:afterSwap', function(event) {
                 UpdateLikeButtons(); 
     });
     LikeButtonClickHandle();
+    $(document).on('click', "#theme-toggle-btn", function(){
+        toggleTheme();
+    })
 });
 
 function LikeButtonClickHandle(){
@@ -59,4 +63,81 @@ function UpdateLikeButtons() {
           }
         });
       });
+}
+function CheckSubscription(){
+    var author = window.location.pathname.split('/').at(-1);
+    var data = {
+        'author': author,
+        'csrfmiddlewaretoken': csrftoken
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: checksubscription_ajax, // URL to check subscription status
+        data: data,
+        success: function(data) {
+            if (data.subscribed) {
+                $('.subscribe-btn').text('Unsubscribe').removeClass('subscribe-btn').addClass('unsubscribe-btn');
+            } else {
+                $('.unsubscribe-btn').text('Subscribe').removeClass('unsubscribe-btn').addClass('subscribe-btn');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log('error');
+            console.log(xhr.responseText);
+        }
+    });
+}
+
+function SubscribeStatusChange(){
+    var author = window.location.pathname.split('/').at(-1);
+    var data = {
+        'author': author,
+        'csrfmiddlewaretoken': csrftoken
+    };
+    $('.subscribe-btn, .unsubscribe-btn').click(function() {
+        var button = $(this); // Get the current button element
+        var url = button.hasClass('subscribe-btn') ? subscribe_ajax_url : unsubscribe_ajax_url;
+        if (button.hasClass('unsubscribe-btn')) {
+            data.delete = true;
+        }
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: data,
+            success: function(data) {
+                if (data.subscribed) {
+                    $('.subscribe-btn').text('Unsubscribe').removeClass('subscribe-btn').addClass('unsubscribe-btn');
+                }
+                else {
+                    $('.unsubscribe-btn').text('Subscribe').removeClass('unsubscribe-btn').addClass('subscribe-btn');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log('error');
+                console.log(xhr.responseText);
+            }
+        });
+    });
+}
+// function to set a given theme/color-scheme
+function setTheme(themeName) {
+    localStorage.setItem('theme', themeName);
+    document.documentElement.className = themeName;
+}
+// function to toggle between light and dark theme
+function toggleTheme() {
+   if (localStorage.getItem('theme') === 'theme-dark'){
+       setTheme('theme-light');
+   } else {
+       setTheme('theme-dark');
+   }
+}
+// Immediately invoked function to set the theme on initial load
+function SetSavedTheme() {
+   if (localStorage.getItem('theme') === 'theme-dark') {
+       setTheme('theme-dark');
+   } else {
+       setTheme('theme-light');
+   }
 }

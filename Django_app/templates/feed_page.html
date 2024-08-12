@@ -1,7 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" class="theme-light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,8 +19,8 @@
 <body>
     <div class="wrap">
         <div class="page-layout">
-           
-                <div class="left-side-bar">
+                <div class="side-bars">
+               <!-- <div class="left-side-bar side-bar">
                     <div class="side-bar-content">
                         <span><p>some content</p>
                         </span>
@@ -28,16 +28,40 @@
                         </span>
                     </div>
                 </div>
-                <div class="right-side-bar">
+                -->
+                <div class="right-side-bar side-bar">
                     <div class="side-bar-content">
-                        <div>some content
-                        </div>
-                        <div>some content
-                        </div>
+                        <span>
+                            <a href="#">Subscribtions</a>
+                        </span>
+                        <span>
+                            <a href="{% url 'posts:liked-posts-page' %}">Liked posts</a>
+                        </span>
+                        <span>
+                            <button class="btn" id="theme-toggle-btn">Toggle theme</button>
+                        </span>
                     </div>
 
                 </div>
-           
+                </div>  
+            <div class="menu-posts-spaceholders">
+                <div class="menu-posts-spaceholder" id="menu-posts-top-spaceholder">
+                </div>
+                <div class="menu-posts-spaceholder" id="menu-posts-bottom-spaceholder">
+                </div>
+                <div class="square-shaped-spaceholers">
+                    <div class="posts-body-tip-spaceholder" id="left-square-shaped-spaceholder">
+                    </div>
+                    <div class="posts-body-tip-spaceholder" id="right-square-shaped-spaceholder">
+                    </div>
+                </div>
+                <div class="round-shaped-spaceholders">
+                    <div class="posts-body-tip-spaceholder round-shaped-spaceholder" id="left-round-shaped-spaceholder">
+                    </div>
+                    <div class="posts-body-tip-spaceholder round-shaped-spaceholder" id="right-round-shaped-spaceholder">
+                    </div>
+                </div>
+            </div>
             <div class='menu'>
                 <header>
                     <ul>
