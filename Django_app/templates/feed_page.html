@@ -49,6 +49,8 @@
                 </div>
                 <div class="menu-posts-spaceholder" id="menu-posts-bottom-spaceholder">
                 </div>
+                <div class="menu-posts-spaceholder" id="menu-posts-bottom-border-spaceholder">
+                </div>
                 <div class="square-shaped-spaceholers">
                     <div class="posts-body-tip-spaceholder" id="left-square-shaped-spaceholder">
                     </div>
@@ -65,7 +67,7 @@
             <div class='menu'>
                 <header>
                     <ul>
-                        <li class="Home-btn">
+                        <li class="Home-btn btn">
                             <a href="{% url 'posts:home'%}">
                                 <p>Home</p>
                             </a>
@@ -75,25 +77,36 @@
                                 <p>Add post</p>
                             </a>
                         </li>
+                        <li class="notifications">
+                            <button class="dropdown-btn">
+                                <img class='notification-icon' src="#">
+                            </button>
+                            <div class="dropdown dropdown-hidden">
+                                <div class="dropdown-content">
+                                    {% include 'notifications.html' %}
+                                </div>
+                            </div>
+                            <!--Icons made by <a href="https://www.flaticon.com/authors/iconsax" title="iconsax"> iconsax </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>-->
+                        </li>
                         {% if request.user.is_authenticated %}
-                        <li>
+                        <li class="menu-account profile-href-btn">
                             <form action="{% url 'posts:profile' user.username %}" method="get">
                                 <button type="submit" class="btn"><p class="user_form">Profile</p></button>
                             </form>
                         </li>       
-                        <li>
+                        <li class="menu-account logout-btn">
                             <form action="{% url 'users:logout' %}" method="post">
                                 {% csrf_token %}
                                 <button type="submit" class="btn"><p class="user_form">Logout</p></button>
                             </form>
                         </li>
                         {% else %}
-                        <li>
+                        <li class="menu-account login-btn">
                             <form action="{% url 'users:login' %}" method="get">
                                 <button type="submit" class="btn"><p class="user_form">Login</p></button>
                             </form>
                         </li>
-                        <li>
+                        <li class="menu-account register-btn">
                             <form action="{% url 'users:register' %}" method="get">
                                 <button type="submit" class="btn"><p class="user_form">Register</p></button>
                             </form>

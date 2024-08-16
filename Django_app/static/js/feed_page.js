@@ -9,6 +9,7 @@ $(document).ready(function() {
     $(document).on('click', "#theme-toggle-btn", function(){
         toggleTheme();
     })
+    DropdownListHandle()
 });
 
 function LikeButtonClickHandle(){
@@ -140,4 +141,19 @@ function SetSavedTheme() {
    } else {
        setTheme('theme-light');
    }
+}
+
+function DropdownListHandle(){
+    $('.dropdown-btn').click(function(){
+        var button = $(this);
+        var siblings = button.siblings('.dropdown');
+        if (siblings.hasClass('dropdown-hidden')) {
+            siblings.removeClass('dropdown-hidden');
+            siblings.toggleClass('dropdown-showen');
+        }
+        else{
+            siblings.removeClass('dropdown-showen');
+            siblings.toggleClass('dropdown-hidden');
+        }
+    });
 }
