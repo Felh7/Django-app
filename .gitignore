@@ -139,7 +139,4 @@ GitHub.sublime-settings
 .DS_Store
 launch.json
 
-# uploads 
-*upload
-# imgs
-*imgs
+static

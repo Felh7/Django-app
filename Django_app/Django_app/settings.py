@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from django.Secret_key import Secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,14 +19,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = Secret_key.get_secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+if DEBUG == True:
+   SECRET_KEY = '@k#9_w+)+7*ka__6u^(=7kilzahgn&c=)#6liwb!i*ip8)0avd'
 
+ALLOWED_HOSTS = ['web', 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8080', 'http://localhost']
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
@@ -97,8 +97,8 @@ DATABASES = {
         'NAME': 'djangodb',
         'USER': 'djangouser',
         'PASSWORD': 'greatpass',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
@@ -140,6 +140,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+STATIC_ROOT = "/var/www/Django_app/static/"
 
 MEDIA_URL = '/media/'
 

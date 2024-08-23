@@ -1,0 +1,19 @@
+FROM python:3.12-slim
+
+COPY /Django_app /usr/src/Django_server/Django_app
+
+#Changing
+RUN  sed -i "s/'HOST': 'localhost'/'HOST': 'host.docker.internal'/g" /usr/src/Django_server/Django_app/Django_app/settings.py
+COPY requirements.txt /usr/src/Django_server
+
+COPY docker/Django_server/scripts/script.sh /usr/src/Django_server/scripts/script.sh
+RUN chmod +x /usr/src/Django_server/scripts/script.sh
+
+COPY docker/Django_server/configs/gunicorn_conf.py /usr/src/Django_server/Django_app/configs/gunicorn_conf.py
+
+RUN pip install -r /usr/src/Django_server/requirements.txt
+
+
+WORKDIR /usr/src/Django_server/Django_app
+
+EXPOSE 8080

@@ -23,6 +23,7 @@ class RegisterUserForm(UserCreationForm):
     password1 = forms.CharField(required = True, widget=forms.PasswordInput(attrs={ 'placeholder': 'Password', 'id': 'passwd', 'maxlength': 32 }))
     password2 = forms.CharField(required = True, widget=forms.PasswordInput(attrs={ 'placeholder': 'Repeat your password', 'id': 'passwdrpt', }))
     email = forms.CharField(required = True, widget=forms.EmailInput(attrs={ 'placeholder': 'E-mail', 'id': 'e_mail'}))
+    usable_password = None
 
     error_messages = {
         "password_mismatch": ("Passwords didn’t match."),
