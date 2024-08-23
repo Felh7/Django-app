@@ -3,7 +3,9 @@ FROM python:3.12-slim
 COPY /Django_app /usr/src/Django_server/Django_app
 
 #Changing
-RUN  sed -i "s/'HOST': 'localhost'/'HOST': 'host.docker.internal'/g" /usr/src/Django_server/Django_app/Django_app/settings.py
+RUN  rm /usr/src/Django_server/Django_app/Django_app/settings.py
+COPY /docker/Django_server/settings/settings.py /usr/src/Django_server/Django_app/Django_app/settings.py
+
 COPY requirements.txt /usr/src/Django_server
 
 COPY docker/Django_server/scripts/script.sh /usr/src/Django_server/scripts/script.sh

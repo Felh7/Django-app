@@ -26,7 +26,8 @@ DEBUG = True
 if DEBUG == True:
    SECRET_KEY = '@k#9_w+)+7*ka__6u^(=7kilzahgn&c=)#6liwb!i*ip8)0avd'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['web', 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8080', 'http://localhost']
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
@@ -96,8 +97,8 @@ DATABASES = {
         'NAME': 'djangodb',
         'USER': 'djangouser',
         'PASSWORD': 'greatpass',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
