@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,11 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-S3_STORAGE = True
+DEBUG = config('DEBUG', default = False, cast = bool)
 
-if DEBUG == True:
-   SECRET_KEY = '@k#9_w+)+7*ka__6u^(=7kilzahgn&c=)#6liwb!i*ip8)0avd'
+S3_STORAGE = config('S3_STORAGE', default = False, cast = bool)
+
+SECRET_KEY = config('SECRET_KEY')
 
 ALLOWED_HOSTS = ['web', 'localhost', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['http://localhost:8080', 'http://localhost']
@@ -154,13 +156,13 @@ if S3_STORAGE:
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         },
     }
-    AWS_ACCESS_KEY_ID = '0DJJJ6DMPHMY9QNYDW1I'
-    AWS_SECRET_ACCESS_KEY = 'QQkxDMuXDkSeH2Vuzx5jRA7rcMjAxMi5nhnpg8LI'
-    AWS_STORAGE_BUCKET_NAME = '0de88da5-3b32fcae-c046-4c70-812b-03b271c62d76'
-    AWS_S3_REGION_NAME = 'ru-1'  
-    S3_HOSTING='s3.timeweb.cloud'
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.{S3_HOSTING}'
-    AWS_S3_ENDPOINT_URL = f'https://{S3_HOSTING}'
+    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
+    S3_HOSTING = config('S3_HOSTING', default = 's3.amazonaws.com')
+    AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN')
+    AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL', default = 'https://s3.amazonaws.com')
 else:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = BASE_DIR / 'media'
