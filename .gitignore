@@ -139,6 +139,6 @@ GitHub.sublime-settings
 .DS_Store
 launch.json
 
-static
+/static
 *.env
 .vscode/settings.json
