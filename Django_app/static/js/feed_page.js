@@ -6,6 +6,7 @@ $(document).ready(function() {
                 UpdateLikeButtons(); 
     });
     LikeButtonClickHandle();
+    DeletePostButtonClickHandle();
     $(document).on('click', "#theme-toggle-btn", function(){
         toggleTheme();
     })
@@ -43,11 +44,41 @@ function LikeButtonClickHandle(){
             });
     });
 }
+
+function DeletePostButtonClickHandle() {
+    $('.post-body').on('click', '.delete-post-button', function() {
+        var button = $(this)
+        var post_id = button.data('post-id')
+        var PostContent = button.closest('.post-content')
+        console.log(PostContent)
+
+        $.ajax({
+            type: "POST",
+            url: DeletPostUrl,
+            data: {
+                'post_id': post_id,
+                'csrfmiddlewaretoken': csrftoken,
+                'delete': true,
+            },
+            success: function(response){
+                if (response.deleted){
+                    console.log('post has been deleted')
+                    PostContent.hide()
+                    PostContent.closest('#deleted-post-placeholder').show()
+                }
+                else{
+                    console.log('post has not been deleted')
+                }
+            }
+        })
+    })
+
+}
 function UpdateLikeButtons() {
     $(".post-body").each(function() {
         var $this = $(this)
         var $button = $this.find(".like-btn")
-        var post_id = $button.data("post-id");
+        var post_id = $button.data("post-id")
 
         // Make an AJAX request to the API endpoint
         $.ajax({

@@ -8,45 +8,61 @@
                             ></div>
                         {% else %}
                         <div class="post-body">
-                            <div class="post-data">
-                            <span class="post-author-text"><a href="{% url 'posts:profile' post_data.post.author %}" >{{ post_data.post.author }}</a></span>
-                            <span> 
-                                {% if request.user.is_authenticated and request.user != post_data.post.author and title != 'Home' and title != 'Liked'%}
-                                <script>
-                                    var subscribe_ajax_url = "{% url 'posts:subscribe_ajax' %}";
-                                    var unsubscribe_ajax_url = "{% url 'posts:unsubscribe_ajax' %}";
-                                    var checksubscription_ajax = "{% url 'posts:checksubscription_ajax' %}";
-                                 </script>
-                                <button class="subscribe-btn">Subscribe</button>
+                            <div class="post-content">
+                                <div class="post-data">
+                                <span class="post-author-text"><a href="{% url 'posts:profile' post_data.post.author %}" >{{ post_data.post.author }}</a></span>
+                                <span> 
+                                    {% if request.user.is_authenticated and request.user != post_data.post.author and title != 'Home' and title != 'Liked'%}
+                                    <script>
+                                        var subscribe_ajax_url = "{% url 'posts:subscribe_ajax' %}";
+                                        var unsubscribe_ajax_url = "{% url 'posts:unsubscribe_ajax' %}";
+                                        var checksubscription_ajax = "{% url 'posts:checksubscription_ajax' %}";
+                                    </script>
+                                    <button class="subscribe-btn">Subscribe</button>
+            
+                                    {% endif %}
+                                </span>
+                                {% if request.user.is_authenticated and request.user == post_data.post.author %}
+                                    <script>
+                                        var DeletPostUrl = "{% url 'posts:delete_post_ajax' %}";
+                                    </script>
+                                    <span>
+                                        <button class = 'delete-post-button' data-post-id="{{post_data.post.id}}">delete</button>
+                                    </span>
+
                                 {% endif %}
-                            </span>
-                            <span class="time-diff-post">
-                                <p class="secondary-text">
-                                {{ post_data.time_diff }}
-                                </p>
-                            </span>
-                            </div>
-                            <div class="post-text-data">
-                                <p>
-                                {{ post_data.post.text }}
-                                </p>
-                            </div>
-                            {% if post_data.post.image %}
-                            <div class="post-img">
-                                <img src = "{{ post_data.post.image.url }}">
-                            </div>
-                            {% endif %}
-                            <div class="reactions" style="height: 30px;">
-                                <span><button class="like-btn" style="height:100%;" data-post-id="{{post_data.post.id}}">Like</button></span>
+                                <span class="time-diff-post">
+                                    <p class="secondary-text">
+                                    {{ post_data.time_diff }}
+                                    </p>
+                                </span>
+                                </div>
+                                <div class="post-text-data">
+                                    <p>
+                                    {{ post_data.post.text }}
+                                    </p>
+                                </div>
+                                {% if post_data.post.image %}
+                                <div class="post-img">
+                                    <img src = "{{ post_data.post.image.url }}">
+                                </div>
+                                {% endif %}
+                                <div class="reactions" style="height: 30px;">
+                                    <span><button class="like-btn" style="height:100%;" data-post-id="{{post_data.post.id}}">Like</button></span>
+                                    
+                                </div>
+                                
+                            <!--  {% if post_data.post.video %}
+                                <video>
+                                    <source src="{{ post_data.post.video.url }}" type="video/mp4">
+                                </video>
+                                {% endif %}
+                                -->
                                 
                             </div>
-                            
-                          <!--  {% if post_data.post.video %}
-                            <video>
-                                <source src="{{ post_data.post.video.url }}" type="video/mp4">
-                            </video>
-                            {% endif %}
-                            -->
+                            <div id="deleted-post-placeholder" hidden>
+                                <p>Post deleted</p>
+                            </div>
                         </div>
                         {% endif %}
                 {% endfor %}

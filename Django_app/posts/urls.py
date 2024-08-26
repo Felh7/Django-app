@@ -7,6 +7,7 @@ app_name = 'posts'
 urlpatterns = [
     path('', views.home.as_view(), name='home'),
     path('addpost', views.post_page.as_view(), name='add_post'),
+    path('delete_post_ajax', views.delete_post_ajax, name = 'delete_post_ajax'),
     path('subscribe_ajax', views.subscribe_ajax, name = 'subscribe_ajax'),
     path('liked', views.liked_posts_page.as_view(), name='liked-posts-page'),
     path('unsubscribe_ajax', views.unsubscribe_ajax, name = 'unsubscribe_ajax'),

@@ -2,6 +2,8 @@ FROM python:3.12-slim
 
 COPY /Django_app /usr/src/Django_server/Django_app
 
+COPY /Django_app/Django_app/.env /usr/src/Django_server
+
 #Changing
 RUN  rm /usr/src/Django_server/Django_app/Django_app/settings.py
 COPY /docker/Django_server/settings/settings.py /usr/src/Django_server/Django_app/Django_app/settings.py

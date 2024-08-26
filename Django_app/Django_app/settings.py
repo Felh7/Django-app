@@ -159,8 +159,8 @@ if S3_STORAGE:
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
     S3_HOSTING = config('S3_HOSTING', default = 's3.amazonaws.com')
-    AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN')
-    AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL', default = 'https://s3.amazonaws.com')
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.{S3_HOSTING}'
+    AWS_S3_ENDPOINT_URL = f'https://{S3_HOSTING}'
 else:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = BASE_DIR / 'media'

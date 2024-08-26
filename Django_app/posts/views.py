@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, CreateView, FormView, ListView
+from django.views.generic import TemplateView, CreateView, FormView, ListView, DeleteView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -64,6 +64,17 @@ class PostsDisplayView(ListView):
             else:
                 return  f"{seconds} second ago"
             
+def delete_post_ajax(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        object = request.POST.get('post_id')
+        try:
+            post_id = UserPost.objects.get(pk=object)
+            post_id.delete()
+            return JsonResponse({'deleted': True})
+        except ObjectDoesNotExist:
+            return JsonResponse({'deleted': False})
+    return JsonResponse({'deleted': False})
+        
 # Create your views here.
 def checksubscription_ajax(request):
     if request.method == 'POST' and request.user.is_authenticated:
