@@ -28,7 +28,7 @@ S3_STORAGE = config('S3_STORAGE', default = False, cast = bool)
 
 SECRET_KEY = config('SECRET_KEY')
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', defautlt = [], cast = list)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default = [], cast = list)
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default = [], cast = list)
 INTERNAL_IPS = [
     # ...
@@ -99,8 +99,8 @@ DATABASES = {
         'NAME': config('PSQL_DATABASE_NAME'), 
         'USER': config('PSQL_USER'),
         'PASSWORD': config('PSQL_USER_PASS'),
-        'HOST': config('PSQL_HOST', default = 'localhost'),
-        'PORT': config('PSQL_PORT', default = ''),
+        'HOST': config('PSQL_HOST', default = 'db'),
+        'PORT': config('PSQL_PORT', default = '5432'),
     }
 }
 

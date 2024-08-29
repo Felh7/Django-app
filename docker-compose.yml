@@ -1,8 +1,8 @@
 services:
   web:
     build:
-      context: ./docker/Django_server/
-      dockerfile: dockerfile
+      context: ./
+      dockerfile: docker/Django_server/dockerfile
     command: bash -c /usr/src/Django_server/scripts/script.sh && gunicorn Django_app.wsgi:application --bind 0.0.0.0:8080 
     expose:
       - '8000'
@@ -13,12 +13,12 @@ services:
         condition: service_healthy
   db:
     image: postgres:16
+    env_file: '.env'
     environment:
-      - POSTRES_USER=djangouser
-      - POSTGRES_PASSWORD=greatpass
-      - POSTGRES_DB=djangodb
+      POSTGRES_USER: ${PSQL_USER}
+      POSTGRES_PASSWORD: ${PSQL_USER_PASS}
+      POSTGRES_DB: ${PSQL_DATABASE_NAME}
     volumes:
-      - ./docker/Postgresql/dataset:/docker-entrypoint-initdb.d
       - PostgresqlData:/var/lib/postgresql/data
 
     healthcheck:

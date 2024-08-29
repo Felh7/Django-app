@@ -1,10 +1,10 @@
 FROM python:3.12-slim
 
 #Copying Django source project
-COPY /Django_app /usr/src/Django_server/Django_app
+COPY Django_app /usr/src/Django_server/Django_app
 
 #Copying .env file 
-COPY /Django_app/Django_app/.env /usr/src/Django_server
+COPY .env /usr/src/Django_server
 
 COPY requirements.txt /usr/src/Django_server
 
