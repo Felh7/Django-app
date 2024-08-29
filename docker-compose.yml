@@ -1,8 +1,8 @@
 services:
   web:
     build:
-      context: ./
-      dockerfile: docker/Django_server/dockerfile
+      context: ./docker/Django_server/
+      dockerfile: dockerfile
     command: bash -c /usr/src/Django_server/scripts/script.sh && gunicorn Django_app.wsgi:application --bind 0.0.0.0:8080 
     expose:
       - '8000'
@@ -29,7 +29,8 @@ services:
 
   nginx:
     build: 
-      dockerfile: docker/reverse-proxy/dockerfile
+      context: docker/reverse-proxy/
+      dockerfile: dockerfile
     ports:
       - 8080:80
     depends_on:

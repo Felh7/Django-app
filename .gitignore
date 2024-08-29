@@ -141,4 +141,4 @@ launch.json
 
 /static
 *.env
-.vscode/settings.json
+vscode/settings.json

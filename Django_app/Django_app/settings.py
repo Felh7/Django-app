@@ -28,7 +28,8 @@ S3_STORAGE = config('S3_STORAGE', default = False, cast = bool)
 
 SECRET_KEY = config('SECRET_KEY')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', defautlt = [], cast = list)
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default = [], cast = list)
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
@@ -95,11 +96,11 @@ WSGI_APPLICATION = "Django_app.wsgi.application"
 DATABASES = {
     "default": {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'djangodb',
-        'USER': 'djangouser',
-        'PASSWORD': 'greatpass',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': config('PSQL_DATABASE_NAME'), 
+        'USER': config('PSQL_USER'),
+        'PASSWORD': config('PSQL_USER_PASS'),
+        'HOST': config('PSQL_HOST', default = 'localhost'),
+        'PORT': config('PSQL_PORT', default = ''),
     }
 }
 
@@ -150,7 +151,7 @@ if S3_STORAGE:
         "default": {
             "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
         },
-    "staticfiles": {
+        "staticfiles": {
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         },
     }

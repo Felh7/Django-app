@@ -1,22 +1,21 @@
 FROM python:3.12-slim
 
+#Copying Django source project
 COPY /Django_app /usr/src/Django_server/Django_app
 
+#Copying .env file 
 COPY /Django_app/Django_app/.env /usr/src/Django_server
-
-#Changing
-RUN  rm /usr/src/Django_server/Django_app/Django_app/settings.py
-COPY /docker/Django_server/settings/settings.py /usr/src/Django_server/Django_app/Django_app/settings.py
 
 COPY requirements.txt /usr/src/Django_server
 
+#copying script for running server
 COPY docker/Django_server/scripts/script.sh /usr/src/Django_server/scripts/script.sh
 RUN chmod +x /usr/src/Django_server/scripts/script.sh
 
+#copying gunicorn conf
 COPY docker/Django_server/configs/gunicorn_conf.py /usr/src/Django_server/Django_app/configs/gunicorn_conf.py
 
 RUN pip install -r /usr/src/Django_server/requirements.txt
-
 
 WORKDIR /usr/src/Django_server/Django_app
 
