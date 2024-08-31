@@ -1,5 +1,5 @@
 # Social network web-site
-### The main goal of developping this project is to get knowledges and experience in how the web-sites are developped.
+### The main goal of developping this project is to gain knowledge and experience in how websites are developped.
 Features i'd like to have in the end:
 - User registration/authorization (data is stored in postgresql database in default django user model) +
 - Authentification
