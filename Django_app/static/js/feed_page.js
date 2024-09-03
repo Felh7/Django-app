@@ -18,6 +18,8 @@ function LikeButtonClickHandle(){
         var button = $(this);
             var post_id = button.data('post-id');
             var url = button.hasClass('like-btn') ? like_ajax_url : unlike_ajax_url;
+            var like_icon = getComputedStyle(document.documentElement).getPropertyValue('--like-icon')
+            var like_icon_clikced = getComputedStyle(document.documentElement).getPropertyValue('--like-icon-clicked')
             var data = {
                 'csrfmiddlewaretoken': csrftoken,
                 'post_id': post_id,
@@ -31,10 +33,12 @@ function LikeButtonClickHandle(){
                 data: data,
                 success: function(data) {
                     if (data.liked) {
-                        button.text('Unlike').removeClass('like-btn').addClass('unlike-btn');
+                        button.removeClass('like-btn').addClass('unlike-btn');
+                        button.find('img').css('--like-icon', like_icon_clikced);
                     }
                     else {
-                        button.text('Like').removeClass('unlike-btn').addClass('like-btn');
+                        button.removeClass('unlike-btn').addClass('like-btn');
+                        button.find('img').css('--like-icon', like_icon);
                     }
                 },
                 error: function(xhr, status, error) {
@@ -77,8 +81,8 @@ function DeletePostButtonClickHandle() {
 function UpdateLikeButtons() {
     $(".post-body").each(function() {
         var $this = $(this)
-        var $button = $this.find(".like-btn")
-        var post_id = $button.data("post-id")
+        var button = $this.find(".like-btn")
+        var post_id = button.data("post-id")
 
         // Make an AJAX request to the API endpoint
         $.ajax({
@@ -90,7 +94,8 @@ function UpdateLikeButtons() {
           success: function(response) {
             // Update the like button's state based on the response
             if (response.liked) {
-                $this.find(".like-btn").text('Unlike').removeClass('like-btn').addClass("unlike-btn");
+                button.removeClass('like-btn').addClass('unlike-btn');
+                button.find('img').css('--like-icon', getComputedStyle(document.documentElement).getPropertyValue('--like-icon-clicked'));
             } 
           }
         });

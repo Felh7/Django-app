@@ -1,5 +1,5 @@
 {% for post_data in timediff_posts %}
-                        {% if forloop.last %}
+                        {% if forloop.index|mod:5 == 0 %}
                             <div 
                                 hx-trigger="revealed"
                                 hx-get="{{ load_more_url }}?page={{ page_obj.number|add:1 }}"
@@ -21,6 +21,9 @@
                                     <button class="subscribe-btn">Subscribe</button>
             
                                     {% endif %}
+                                </span>
+                                <span class = 'post-content-spaceholder'>
+                                    
                                 </span>
                                 {% if request.user.is_authenticated and request.user == post_data.post.author %}
                                     <script>
@@ -47,8 +50,8 @@
                                     <img src = "{{ post_data.post.image.url }}">
                                 </div>
                                 {% endif %}
-                                <div class="reactions" style="height: 30px;">
-                                    <span><button class="like-btn" style="height:100%;" data-post-id="{{post_data.post.id}}">Like</button></span>
+                                <div class="reactions">
+                                    <span><button class="like-btn" style="height:100%;" data-post-id="{{post_data.post.id}}"><img class="like-icon"></button></span>
                                     
                                 </div>
                                 

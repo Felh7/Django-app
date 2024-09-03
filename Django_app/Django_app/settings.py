@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
+from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,8 +28,8 @@ S3_STORAGE = config('S3_STORAGE', default = False, cast = bool)
 
 SECRET_KEY = config('SECRET_KEY')
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default = [], cast = list)
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default = [], cast = list)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default = '', cast=Csv())
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default = '', cast=Csv())
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
