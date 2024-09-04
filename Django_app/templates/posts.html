@@ -1,12 +1,4 @@
 {% for post_data in timediff_posts %}
-                        {% if forloop.index|mod:5 == 0 %}
-                            <div 
-                                hx-trigger="revealed"
-                                hx-get="{{ load_more_url }}?page={{ page_obj.number|add:1 }}"
-                                hx-swap="afterend"
-                               
-                            ></div>
-                        {% else %}
                         <div class="post-body">
                             <div class="post-content">
                                 <div class="post-data">
@@ -67,5 +59,12 @@
                                 <p>Post deleted</p>
                             </div>
                         </div>
+                        {% if forloop.last and not forloop.first %}
+                            <div 
+                                hx-trigger="revealed"
+                                hx-get="{{ load_more_url }}?page={{ page_obj.number|add:1 }}"
+                                hx-swap="afterend"
+                               
+                            ></div>
                         {% endif %}
-                {% endfor %}
+{% endfor %}
